@@ -75,22 +75,33 @@ jobs:
                 },
               ];
 
+              const attachments = [];
+
               for (const [severity, severityAlerts] of [["Critical", critical], ["High", high]]) {
                 if (severityAlerts.length > 0) {
-                  blocks.push({
-                    type: "section",
-                    text: {
-                      type: "mrkdwn",
-                      text: `*${severity} (${severityAlerts.length})*\n${severityAlerts.map(formatAlert).join("\n")}`,
-                    },
+                  attachments.push({
+                    color: severity === "Critical" ? "#e01e5a" : "#ecb22e",
+                    blocks: [
+                      {
+                        type: "section",
+                        text: {
+                          type: "mrkdwn",
+                          text: severityAlerts.map(formatAlert).join("\n"),
+                        },
+                      },
+                    ],
                   });
                 }
+              }
+
+              if (attachments.length === 0) {
+                return;
               }
 
               const response = await fetch(process.env.SLACK_WEBHOOK_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ blocks }),
+                body: JSON.stringify({ blocks, attachments }),
               });
 
               if (!response.ok) {
