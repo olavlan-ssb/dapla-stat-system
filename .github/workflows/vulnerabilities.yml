@@ -16,13 +16,18 @@ jobs:
       - name: Check out repository list
         uses: actions/checkout@v4
 
-      - name: Create vulnerability reporter token
+      - name: Read repository list
+        id: repositories
+        run: echo "repositories=$(jq -r '.repositories | join(",")' system.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Create access token restricted to given repositories
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.VULNERABILITY_REPORTER_APP_ID }}
           private-key: ${{ secrets.VULNERABILITY_REPORTER_PRIVATE_KEY }}
           owner: olavlan-ssb
+          repositories: ${{ steps.repositories.outputs.repositories }}
 
       - name: Send high and critical Dependabot vulnerabilities to Slack
         uses: actions/github-script@v8
@@ -80,7 +85,7 @@ jobs:
               for (const [severity, severityAlerts] of [["Critical", critical], ["High", high]]) {
                 if (severityAlerts.length > 0) {
                   attachments.push({
-                    color: severity === "Critical" ? "#e01e5a" : "#ecb22e",
+                    color: severity === "Critical" ? "danger" : "warning",
                     blocks: [
                       {
                         type: "section",
