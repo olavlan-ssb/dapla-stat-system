@@ -69,8 +69,8 @@ jobs:
               const formatAlert = (alert) => {
                 const dependabotLink = `<${alert.html_url}|${alert.dependency.package.name}>`;
                 const fixed = alert.security_vulnerability?.first_patched_version?.identifier;
-                const fixedText = fixed ? `, fixed in ${fixed}` : "no fix";
-                return `- ${dependabotLink}${fixedText}`;
+                const fixedText = fixed ? `fixed in ${fixed}` : "no fix";
+                return `- ${dependabotLink}, ${fixedText}`;
               };
 
               const blocks = [
@@ -82,10 +82,10 @@ jobs:
 
               const attachments = [];
 
-              for (const [severity, severityAlerts] of [["Critical", critical], ["High", high]]) {
+              for (const [severity, severityAlerts] of [["critical", critical], ["high", high]]) {
                 if (severityAlerts.length > 0) {
                   attachments.push({
-                    color: severity === "Critical" ? "#e01e5a" : "#ecb22e",
+                    color: severity === "critical" ? "#e01e5a" : "#ecb22e",
                     blocks: [
                       {
                         type: "section",
