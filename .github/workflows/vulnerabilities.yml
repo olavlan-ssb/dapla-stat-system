@@ -1,4 +1,4 @@
-name: Dependabot Slack Report
+name: Report vulnerabilities to Slack
 
 on:
   schedule:
@@ -76,7 +76,7 @@ jobs:
               const blocks = [
                 {
                   type: "header",
-                  text: { type: "plain_text", text: `olavlan-ssb/${repo}` },
+                  text: { type: "plain_text", text: repo },
                 },
               ];
 
