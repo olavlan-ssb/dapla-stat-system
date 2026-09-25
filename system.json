@@ -1,0 +1,6 @@
+{
+    "repositories": [
+        "dapla-toolbelt-pseudo",
+        "dapla-auth-client"
+    ]
+}
