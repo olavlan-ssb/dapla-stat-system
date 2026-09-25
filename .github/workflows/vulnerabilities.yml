@@ -85,7 +85,7 @@ jobs:
               for (const [severity, severityAlerts] of [["Critical", critical], ["High", high]]) {
                 if (severityAlerts.length > 0) {
                   attachments.push({
-                    color: severity === "Critical" ? "danger" : "warning",
+                    color: severity === "Critical" ? "#e01e5a" : "#ecb22e",
                     blocks: [
                       {
                         type: "section",
